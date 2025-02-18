@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asynchronous Search</title>
+    <script>
+        async function search() {
+            let query = document.getElementById("search-box").value;
+            let resultsDiv = document.getElementById("results");
+    
+            if (query.trim() === "") {
+                resultsDiv.innerHTML = ""; // Clear results when search is empty
+                return;
+            }
+
+            let response = await fetch(`/search?q=${query}`);
+            let data = await response.json();
+
+            resultsDiv.innerHTML = ""; // Clear old results
+            data.results.forEach(item => {
+                let p = document.createElement("p");
+                p.textContent = item;
+                resultsDiv.appendChild(p);
+            });
+        }
+
+        document.getElementById("search-box").addEventListener("input", search);
+    </script>
+</head>
+<body>
+    <h1>Asynchronous Search</h1>
+    <input type="text" id="search-box" placeholder="Type to search...">
+    <div id="results"></div>
+</body>
+</html>
